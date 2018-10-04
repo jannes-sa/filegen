@@ -16,6 +16,7 @@ var (
 	pathHTTPRouter  string
 	pathHTTPCtrl    string
 	pathHTTPCtrlOri string
+	pathHTTPTest    string
 
 	ctrl = flag.String("ctrl", "", "controller name")
 )
@@ -41,6 +42,7 @@ func init() {
 	pathHTTPRouter = os.Getenv("APPPATH") + "routers/http/router.go"
 	pathHTTPCtrl = os.Getenv("APPPATH") + "controllers/http/" + *ctrl + ".go"
 	pathHTTPCtrlOri = os.Getenv("APPPATH") + "controllers/" + *ctrl + ".go"
+	pathHTTPTest = os.Getenv("APPPATH") + "routers/componenttest/http/" + *ctrl + "_test.go"
 }
 
 func check() {
@@ -68,6 +70,47 @@ func main() {
 func RouterGen() {
 	readWriteCtrl()
 	readRouterAndWrite()
+	writeComponentTest()
+}
+
+func writeComponentTest() {
+	str := `package http
+
+import (
+	"encoding/json"
+	"strconv"
+	"` + os.Getenv("GOAPP") + `/helper/constant"
+	"` + os.Getenv("GOAPP") + `/routers/componenttest"
+	"` + os.Getenv("GOAPP") + `/structs"
+	httpStructs "` + os.Getenv("GOAPP") + `/structs/api/http"
+	"testing"
+
+	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/astaxie/beego"
+)
+
+func Test` + strings.Title(*ctrl) + `Success(t *testing.T) {
+
+	var req structs.ReqData
+	var reqBody httpStructs.ReqTest
+	reqBody.ID = 1
+	req.ReqBody = reqBody
+	by, _ := json.Marshal(req)
+
+	res := componenttest.SendHTTP(
+		"POST",
+		host+"/"+constant.DOMAINNAME+"/v1/` + *ctrl + `",
+		by,
+	)
+
+	Convey("Test` + strings.Title(*ctrl) + `Success", t, func() {
+		Convey("Should Success", func() {
+			So(len(res.Error), ShouldEqual, 0)
+		})
+	})
+}`
+	createFile(str, pathHTTPTest)
 }
 
 func readWriteCtrl() {

@@ -19,20 +19,10 @@ func Router() {
 		/*:STARTHTTP*/
 
 		/* this router only for testing purpose */
-		beego.NSNamespace("/test",
+		
+		beego.NSNamespace("/template",
 			beego.NSInclude(
-				&ctrl.TestController{},
-			),
-		),
-
-		beego.NSNamespace("/nambak1",
-			beego.NSInclude(
-				&ctrl.Nambak1Controller{},
-			),
-		),
-		beego.NSNamespace("/makan1",
-			beego.NSInclude(
-				&ctrl.Makan1Controller{},
+				&ctrl.TemplateController{},
 			),
 		),
 		/*:ENDHTTP*/
