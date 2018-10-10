@@ -187,7 +187,7 @@ import (
 
 // GetAll` + flDB + ` - GetAll` + flDB + `
 func GetAll` + flDB + `(errCode *[]structs.TypeError) (rows []dbStruct.` + flDB + `) {
-	rows, err := DBSvcLog.GetAll` + flDB + `()
+	rows, err := DB` + flnm + `.GetAll` + flDB + `()
 	if err != nil {
 		structs.ErrorCode.DatabaseError.String(errCode, err.Error(), "GetAll` + flDB + ` ", logicName)
 	}
@@ -218,7 +218,7 @@ func Insert` + flDB + `(
 		return
 	}
 
-	_, err = DBSvcLog.Insert` + flDB + `(db, &row)
+	_, err = DB` + flnm + `.Insert` + flDB + `(db, &row)
 	if err != nil {
 		structs.ErrorCode.DatabaseError.String(errCode, err.Error(), nmFunc, logicName)
 		err = db.Rollback()
@@ -237,11 +237,11 @@ func Insert` + flDB + `(
 	}
 }`
 
-	strLogicTest := `package svclog
+	strLogicTest := `package ` + pkgnm + `
 
 import (
-	"template/structs"
-	lStruct "template/structs/logic"
+	"` + app + `/structs"
+	lStruct "` + app + `/structs/logic"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
