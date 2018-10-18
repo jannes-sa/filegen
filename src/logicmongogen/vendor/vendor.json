@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "NxoJ1sUeTWZNbveibhY5mJB5Xak=",
+			"path": "github.com/iancoleman/strcase",
+			"revision": "3605ed457bf7f8caa1371b4fafadadc026673479",
+			"revisionTime": "2018-07-26T02:35:41Z"
+		}
+	],
+	"rootPath": "crudgen"
+}
